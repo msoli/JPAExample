@@ -1,0 +1,37 @@
+server:
+  porT: 9000
+  error:
+      whitelabel:
+          enabled: false
+  context-path: /jpa/
+
+spring:
+    profiles:
+        active: dev
+    thymeleaf:
+        cache: false
+    resources:
+        cache-period: 0
+    datasource:
+        type:  com.zaxxer.hikari.HikariDataSource
+        hikari:
+            connection-test-query: SELECT 1 FROM DUAL
+            minimum-idle: 1
+            maximum-pool-size: 5
+            pool-name: MikeIOPool
+            data-source-properties:
+                cachePrepStmts: true
+                prepStmtCacheSize: 250
+                prepStmtCacheSqlLimit: 2048
+                useServerPrepStmts: true
+#        driver-class-name: com.mysql.jdbc.Driver}
+        url: jdbc:mysql://localhost:3306/heroes
+        username: root
+        password:
+    jpa:
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        database: MYSQL
+        show-sql: false
+
+
+
