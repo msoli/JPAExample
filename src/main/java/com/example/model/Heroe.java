@@ -1,9 +1,6 @@
 package com.example.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by Miguel on 22/01/2017.
@@ -14,6 +11,9 @@ public class Heroe {
     private String name;
     private Boolean estatus;
     private String superPower;
+    private Categoria categoriaByIdCategoria;
+
+
 
     @Id
     @Column(name = "id_hero")
@@ -87,5 +87,17 @@ public class Heroe {
                 ", estatus=" + estatus +
                 ", superPower='" + superPower + '\'' +
                 '}';
+    }
+
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_categoria",  referencedColumnName = "id_categoria", nullable = false)
+    public Categoria getCategoriaByIdCategoria() {
+        return categoriaByIdCategoria;
+    }
+
+    public void setCategoriaByIdCategoria(Categoria categoriaByIdCategoria) {
+        this.categoriaByIdCategoria = categoriaByIdCategoria;
     }
 }
