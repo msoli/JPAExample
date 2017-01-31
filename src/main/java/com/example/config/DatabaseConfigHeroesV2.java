@@ -33,7 +33,7 @@ public class DatabaseConfigHeroesV2 {
     @Inject
     private AngularProperties angularProperties;
 
-    @Bean(destroyMethod = "close")
+    @Bean(name = "heroesV2dataSource",destroyMethod = "close")
     public DataSource heroesV2dataSource() {
 
 

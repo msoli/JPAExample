@@ -52,7 +52,7 @@ mikeio:
             minimum-idle: 1
             maximum-pool-size: 5
             pool-name: MikeIOPool
-#    hibernate:
-#        dialect: org.hibernate.dialect.MySQLDialect
-#        show_sql: false
-#        format_sql: true
+    hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        show_sql: false
+        format_sql: true
