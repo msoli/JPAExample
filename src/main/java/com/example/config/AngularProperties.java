@@ -24,7 +24,8 @@ public class AngularProperties {
     @Data
     public static class Database {
 
-        private String url;
+        private String urlHeroes;
+        private String urlHeroesV2;
         private String username;
         private String password;
         private String driverClassName;

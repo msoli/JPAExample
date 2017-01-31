@@ -3,8 +3,10 @@ package com.example;
 import com.example.config.AngularProperties;
 import com.example.model.Categoria;
 import com.example.model.Heroe;
+import com.example.modelv2.Usuario;
 import com.example.repository.CategoriaRepository;
 import com.example.repository.HeroeRepository;
+import com.example.repositoryv2.UsuarioRepository;
 import org.hibernate.service.spi.InjectService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,34 +22,39 @@ import java.util.List;
 
 @SpringBootApplication
 @EnableConfigurationProperties({AngularProperties.class})
-//@EnableAutoConfiguration(exclude = {  DataSourceAutoConfiguration.class })
-public class JapApplication implements CommandLineRunner  {
+@EnableAutoConfiguration(exclude = {  DataSourceAutoConfiguration.class })
+public class JapApplication implements CommandLineRunner {
 
-	public static void main(String[] args) {
-		SpringApplication.run(JapApplication.class, args);
-	}
-
-
-	@Inject
-	private HeroeRepository heroeRepository;
-
-	@Inject
-	private CategoriaRepository categoriaRepository;
+    public static void main(String[] args) {
+        SpringApplication.run(JapApplication.class, args);
+    }
 
 
-	@Override
-	public void run(String... args) throws Exception {
+    @Inject
+    private HeroeRepository heroeRepository;
 
-		Heroe h = heroeRepository.findByNameConCategoria("Wolverine");
+    @Inject
+    private CategoriaRepository categoriaRepository;
+
+    @Inject
+    private UsuarioRepository usuarioRepository;
 
 
-		List<Heroe> c = categoriaRepository.findByIdCategoria(2);
+    @Override
+    public void run(String... args) throws Exception {
+
+        Heroe h = heroeRepository.findByNameConCategoria("Wolverine");
+
+        List<Heroe> c = categoriaRepository.findByIdCategoria(2);
+
+        usuarioRepository.findAll().stream().forEach(System.out::println);
+
+        System.out.println("-----------");
+
+        heroeRepository.findAll().stream().forEach(System.out::println);
 
 
-		System.out.println("-----------");
+    }
 
-		heroeRepository.findAll().stream().forEach(heroe -> {
-		 	System.out.println(heroe.toString());
-		});
-	}
+
 }

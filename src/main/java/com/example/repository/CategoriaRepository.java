@@ -4,7 +4,6 @@ import com.example.model.Categoria;
 import com.example.model.Heroe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

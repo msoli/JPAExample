@@ -39,7 +39,8 @@ spring:
 
 mikeio:
     database:
-        url: jdbc:mysql://localhost:3306/heroes
+        urlHeroes: jdbc:mysql://localhost:3306/heroes
+        urlHeroesV2: jdbc:mysql://localhost:3306/horoesv2
         username: root
         password:
         cachePrepStmts: true

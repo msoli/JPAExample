@@ -3,8 +3,6 @@ package com.example.config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -24,29 +22,20 @@ import java.util.Properties;
  */
 @Configuration
 @EnableJpaRepositories(
-        basePackages = {"com.example.modelv2","com.example.repositoryv2"},
-        entityManagerFactoryRef = "heroesV2EntityManagerFactory",
-        transactionManagerRef = "heroesV2TransactionManager"
+        basePackages = {"com.example.model", "com.example.repository"},
+        entityManagerFactoryRef = "heroesEntityManagerFactory",
+        transactionManagerRef = "heroesTransactionManager"
 )
-public class DatabaseConfigV2 {
+public class DatabaseConfigHeores {
 
-    private static org.slf4j.Logger LOG = LoggerFactory.getLogger(DatabaseConfigV2.class);
-
+    private static org.slf4j.Logger LOG = LoggerFactory.getLogger(DatabaseConfigHeores.class);
 
     @Inject
     private AngularProperties angularProperties;
 
-
-//    @Bean
-//    @ConfigurationProperties(prefix = "spring2.datasource")
-//    public DataSource heroesV2dataSource() {
-//        DataSource ds = DataSourceBuilder.create().build();
-//        return ds;
-//    }
-
-
+    @Primary
     @Bean(destroyMethod = "close")
-    public DataSource heroesV2dataSource() {
+    public DataSource heroesDataSource() {
 
 
         Properties props = new Properties();
@@ -54,10 +43,9 @@ public class DatabaseConfigV2 {
         props.setProperty("connectionTestQuery", angularProperties.getDatabase().getHikari().getConnectionTestQuery());
         props.setProperty("minimumIdle", angularProperties.getDatabase().getHikari().getMinimumIdle());
         props.setProperty("maximumPoolSize", angularProperties.getDatabase().getHikari().getMaximumPoolSize());
-        props.setProperty("poolName", angularProperties.getDatabase().getHikari().getPoolName());
+        props.setProperty("poolName", angularProperties.getDatabase().getHikari().getPoolName()+"1");
 
-//        props.setProperty("dataSource.url", angularProperties.getDatabase().getUrl());
-        props.setProperty("dataSource.url", "jdbc:mysql://localhost:3306/horoesv2");
+        props.setProperty("dataSource.url", angularProperties.getDatabase().getUrlHeroes());
         props.setProperty("dataSource.user", angularProperties.getDatabase().getUsername());
         props.setProperty("dataSource.password", angularProperties.getDatabase().getPassword());
         props.setProperty("dataSource.cachePrepStmts", angularProperties.getDatabase().getCachePrepStmts());
@@ -73,26 +61,27 @@ public class DatabaseConfigV2 {
     }
 
 
-
-
+    @Primary
     @Bean
-    PlatformTransactionManager heroesV2TransactionManager() {
-        return new JpaTransactionManager(heroesV2EntityManagerFactory().getObject());
+    PlatformTransactionManager heroesTransactionManager() {
+        return new JpaTransactionManager(heroesEntityManagerFactory().getObject());
     }
 
-    @PersistenceContext(unitName = "secondary")
+
+    @PersistenceContext(unitName = "primary")
+    @Primary
     @Bean
-    LocalContainerEntityManagerFactoryBean heroesV2EntityManagerFactory() {
+    LocalContainerEntityManagerFactoryBean heroesEntityManagerFactory() {
 
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-        jpaVendorAdapter.setGenerateDdl(true);
+        jpaVendorAdapter.setGenerateDdl(false);
 
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
 
-        factoryBean.setDataSource(heroesV2dataSource());
+        factoryBean.setDataSource(heroesDataSource());
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter);
-        factoryBean.setPersistenceUnitName("secondary");
-        factoryBean.setPackagesToScan("com.example.modelv2", "com.example.repositoryv2");
+        factoryBean.setPersistenceUnitName("primary");
+        factoryBean.setPackagesToScan("com.example.model", "com.example.repository");
 
         return factoryBean;
     }
